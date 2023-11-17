@@ -2,19 +2,34 @@ import React from "react";
 import Warning from "../warning/Warning";
 import "./update.css";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { update, remove } from "../../redux/userSlice";
 
 export default function Update() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    dispatch(update({ name, email }));
+  };
+  const handleDelete = (e) => {
+    e.preventDefault();
+    dispatch(remove());
+  };
 
   return (
     <div className="update">
       <div className="updateWrapper">
         <h3 className="updateTitle">Update Your Account</h3>
         <Warning />
-        <button className="delete">Delete Account</button>
+        <button className="delete" onClick={handleDelete}>
+          Delete Account
+        </button>
         <div className="updateContainer">
-          <form>
+          <form onSubmit={handleUpdate}>
             <div className="formItem">
               <label>Profile Picture</label>
               <div className="profilePic">
@@ -29,28 +44,22 @@ export default function Update() {
             <div className="formItem">
               <label>Username</label>
               <input
-                className="formInput"
+                className="border border-slate-300 px-2 rounded-md w-[55%] py-1"
                 type="text"
-                placeholder="John"
+                placeholder={user.name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="formItem">
               <label>Email</label>
               <input
-                className="formInput"
+                className="border border-slate-300 px-2 rounded-md w-[55%] py-1"
                 type="text"
-                placeholder="john@gmail.com"
+                placeholder={user.email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="formItem">
-              <label>Password</label>
-              <input className="formInput" type="password" />
-            </div>
-            <button
-              className="updateButton"
-            >
-              Update
-            </button>
+            <button className="updateButton">Update</button>
           </form>
         </div>
       </div>

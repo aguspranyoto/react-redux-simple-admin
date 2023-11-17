@@ -1,13 +1,15 @@
 import React from "react";
 import "./recommendation.css";
+import { useSelector } from "react-redux";
 
 export default function Recommendation({ type }) {
+  const name = useSelector((state) => state.user.name);
   const title =
     type === "user"
-      ? "Reccomended for John"
-      : type === "popular"
-      ? "Popular on Lama App"
-      : "Editor's choice";
+      ? `Reccomended for ${name ?? ""}`
+      : type === `popular`
+      ? `Popular on Lama App`
+      : `Editor's choice`;
 
   const img =
     type === "user"
